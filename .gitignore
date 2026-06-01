@@ -1,0 +1,24 @@
+# Katalogi budowania
+build/
+out/
+cmake-build-*/
+
+# Pliki obiektowe i wykonywalne
+*.o
+*.obj
+*.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# IDE / edytory
+.vs/
+.vscode/
+.idea/
+*.user
+
+# System
+Thumbs.db
+.DS_Store
