@@ -33,11 +33,12 @@ private:
 
 public:
 
-	Account(std::string name_, std::string pesel_, std::string date_of_birth_):money_gr(0) {
+	Account(std::string name_, std::string pesel_,
+		std::string date_of_birth_, long long number_)
+		: money_gr(0), number(number_) {   
 		owner.name = name_;
 		owner.pesel = pesel_;
 		owner.date_of_birth = date_of_birth_;
-		number = Bank::generateAccountNumber();
 	}
 
 	//preventing creating "empty account"
@@ -95,14 +96,6 @@ void Account::printInfo() {
 		<< " PLN\n"
 		<< "================================\n";
 }
-
-
-
-
-
-
-
-
 
 
 bool OwnerData::isPeselValid(const std::string& pesel) {
