@@ -22,3 +22,12 @@ cmake_install.cmake
 # System
 Thumbs.db
 .DS_Store
+
+# Visual Studio build output
+x64/
+Debug/
+Release/
+bank/x64/
+*.sln
+*.vcxproj
+*.vcxproj.filters
