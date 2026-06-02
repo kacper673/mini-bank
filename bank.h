@@ -2,19 +2,29 @@
 #include <random>
 #include <map>
 #include <stdexcept>
+
 #include "account.h"
+#include "validation.h"
 
 class Bank {
 public:
     long long createAccount(const std::string& name,
                             const std::string& pesel,
                             const std::string& dateOfBirth) {
+        if (!isPeselValid(pesel))
+            throw std::invalid_argument("Nieprawidlowy PESEL.");
+        if (!isDateOfBirthValid(dateOfBirth))
+            throw std::invalid_argument("Nieprawidlowa data urodzenia.");
+
         long long number = generateUniqueAccountNumber();
         accounts.emplace(number, Account(name, pesel, dateOfBirth, number));
         return number;
     }
 
     Account& getAccount(long long number) {
+        if (!isValidAccountNumber(number))
+            throw std::invalid_argument("Nieprawidlowy numer konta");
+
         auto it = accounts.find(number);
         if (it == accounts.end()) {
             throw std::runtime_error("Konto o podanym numerze nie istnieje.");

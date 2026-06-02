@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "bank.h"
+#include "validation.h"
 
 
 
@@ -14,6 +14,7 @@ struct OwnerData {
 	OwnerData() = default;
 	OwnerData(std::string name_, std::string pesel_, std::string date_of_birth_){
 		if (!isPeselValid(pesel_)) throw std::invalid_argument("Nieprawidlowy PESEL.");
+		if (!isDateOfBirthValid(date_of_birth_)) throw std::invalid_argument("Nieprawidlowa data urodzenia");
 		name = name_; pesel = pesel_; date_of_birth = date_of_birth_;
 	}
 
@@ -21,8 +22,6 @@ struct OwnerData {
 	std::string pesel;
 	std::string date_of_birth;
 
-private:
-	bool isPeselValid(const std::string& pesel);
 };
 
 
@@ -98,25 +97,3 @@ void Account::printInfo() {
 }
 
 
-bool OwnerData::isPeselValid(const std::string& pesel) {
-	if (pesel.size() != 11) {
-		return false;
-	}
-	for (char c : pesel) {
-		if (!std::isdigit(static_cast<unsigned char>(c))) {
-			return false;
-		}
-	}
-
-	static const int weights[10] = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3 };
-
-	int sum = 0;
-	for (int i = 0; i < 10; ++i) {
-		sum += (pesel[i] - '0') * weights[i];  
-	}
-
-	int control = (10 - (sum % 10)) % 10;  
-	int lastDigit = pesel[10] - '0';
-
-	return control == lastDigit;
-}
