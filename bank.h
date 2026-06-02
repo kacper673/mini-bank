@@ -2,6 +2,7 @@
 #include <random>
 #include <map>
 #include <stdexcept>
+#include <set>
 
 #include "account.h"
 #include "validation.h"
@@ -68,6 +69,11 @@ public:
 private:
     std::map<long long, Account> accounts;
 
+    //optimal way of keeping registered pesels and names, finding in O(logn) time
+    std::set<std::string> registeredPesels;
+    std::set<std::string> registeredNames;
+
+
     long long generateUniqueAccountNumber() {
         long long number;
         do {
@@ -76,17 +82,14 @@ private:
         return number;
     }
 
+    ////optimal way of keeping registered pesels and names, finding in O(logn) time
     bool isPeselRegistered(const std::string& pesel) const {
-        for (const auto& [number, account] : accounts) {
-            if (account.owner.pesel == pesel) return true;
-        }
+        if (registeredPesels.find(pesel) != registeredPesels.end()) return true;
         return false;
     }
 
     bool isNameRegistered(const std::string& name) const {
-        for (const auto& [number, account] : accounts) {
-            if (account.owner.name == name) return true;
-        }
+        if (registeredNames.find(name) != registeredNames.end()) return true;
         return false;
     }
 
