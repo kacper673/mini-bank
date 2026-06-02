@@ -11,8 +11,8 @@
 
 
 struct OwnerData {
-	OwnerData() = default;
-	OwnerData(std::string name_, std::string pesel_, std::string date_of_birth_){
+	inline OwnerData() = default;
+	inline OwnerData(std::string name_, std::string pesel_, std::string date_of_birth_){
 		if (!isPeselValid(pesel_)) throw std::invalid_argument("Nieprawidlowy PESEL.");
 		if (!isDateOfBirthValid(date_of_birth_)) throw std::invalid_argument("Nieprawidlowa data urodzenia");
 		name = name_; pesel = pesel_; date_of_birth = date_of_birth_;
@@ -32,7 +32,7 @@ private:
 
 public:
 
-	Account(std::string name_, std::string pesel_,
+	inline Account(std::string name_, std::string pesel_,
 		std::string date_of_birth_, long long number_)
 		: money_gr(0), number(number_) {   
 		owner.name = name_;
@@ -41,24 +41,24 @@ public:
 	}
 
 	//preventing creating "empty account"
-	Account() = delete;
+	inline Account() = delete;
 
 	OwnerData owner;
 
 	      
-	void deposit(long long amountGr);  
-	void withdraw(long long amountGr);  
+	inline void deposit(long long amountGr);  
+	inline void withdraw(long long amountGr);  
 
-	void printSaldo();
-	void printInfo();
+	inline void printSaldo();
+	inline void printInfo();
 
-	long long getNumber()  const { return number; }
-	long long getMoneyGr() const { return money_gr; }
+	inline long long getNumber()  const { return number; }
+	inline long long getMoneyGr() const { return money_gr; }
 };
 
 
 
-void Account::withdraw(long long amount_gr) {
+inline void Account::withdraw(long long amount_gr) {
 	if (amount_gr <= 0) {
 		throw std::invalid_argument("Kwota wyplaty musi byc dodatnia.");
 	}
@@ -69,14 +69,14 @@ void Account::withdraw(long long amount_gr) {
 }
 
 
-void Account::deposit(long long amount_gr) {
+inline void Account::deposit(long long amount_gr) {
 	if (amount_gr <= 0) {
 		throw std::invalid_argument("Kwota wplaty musi byc dodatnia.");
 	}
 	money_gr += amount_gr;
 }
 
-void Account::printSaldo() {
+inline void Account::printSaldo() {
 	long long zlote = money_gr / 100;
 	long long grosze = money_gr % 100;
 
@@ -87,7 +87,7 @@ void Account::printSaldo() {
 }
 
 
-void Account::printInfo() {
+inline void Account::printInfo() {
 	std::cout << "================================\n"
 		<< "Numer konta : " << number << "\n"
 		<< "Wlasciciel  : " << owner.name << "\n"

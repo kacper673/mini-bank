@@ -201,8 +201,8 @@ static bool getAmount(QWidget* parent, const QString& title, long long& outGr) {
     auto* btns = new QDialogButtonBox(
         QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     form->addRow(btns);
-    connect(btns, &QDialogButtonBox::accepted, &dlg, &QDialog::accept);
-    connect(btns, &QDialogButtonBox::rejected, &dlg, &QDialog::reject);
+    QObject::connect(btns, &QDialogButtonBox::accepted, &dlg, &QDialog::accept);
+    QObject::connect(btns, &QDialogButtonBox::rejected, &dlg, &QDialog::reject);
 
     if (dlg.exec() != QDialog::Accepted) return false;
 
@@ -229,7 +229,7 @@ void MainWindow::onDeposit() {
     try {
         bank_.deposit(num, amount);
         updateDetailsPanel(num);
-        refreshAccountList();    
+        refreshAccountList();
     }
     catch (const std::exception& e) {
         QMessageBox::warning(this, "Błąd wpłaty", e.what());

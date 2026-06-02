@@ -9,7 +9,7 @@
 
 class Bank {
 public:
-    long long createAccount(const std::string& name,
+    inline long long createAccount(const std::string& name,
         const std::string& pesel,
         const std::string& dateOfBirth) {
         if (!isPeselValid(pesel))
@@ -25,7 +25,7 @@ public:
         return number;
     }
 
-     Account& getAccount(long long number) {
+     inline Account& getAccount(long long number) {
         if (!isValidAccountNumber(number))
             throw std::invalid_argument("Nieprawidlowy numer konta");
 
@@ -37,7 +37,7 @@ public:
     }
 
      // const overload for QT UI
-     const Account& getAccount(long long number) const {
+     inline const Account& getAccount(long long number) const {
          auto it = accounts.find(number);
          if (it == accounts.end())
              throw std::runtime_error("Konto o podanym numerze nie istnieje.");
@@ -45,7 +45,7 @@ public:
      }
 
     // getter for UI
-        std::vector<long long> getAccountNumbers() const {
+        inline std::vector<long long> getAccountNumbers() const {
         std::vector<long long> nums;
         for (const auto& [num, acc] : accounts)
             nums.push_back(num);
@@ -53,19 +53,19 @@ public:
     }
 
     
-    void deposit(long long number, long long amountGr) {
+    inline void deposit(long long number, long long amountGr) {
         getAccount(number).deposit(amountGr);
     }
 
-    void withdraw(long long number, long long amountGr) {
+    inline void withdraw(long long number, long long amountGr) {
         getAccount(number).withdraw(amountGr);
     }
 
-    void printAccountInfo(long long number) {
+    inline void printAccountInfo(long long number) {
         getAccount(number).printInfo();
     }
 
-    void printAllAccounts() {
+    inline void printAllAccounts() {
         if (accounts.empty()) {
             std::cout << "Brak kont w systemie.\n";
             return;
@@ -75,7 +75,7 @@ public:
         }
     }
 
-    static long long generateAccountNumber() {
+    inline static long long generateAccountNumber() {
         static std::mt19937_64 engine{ std::random_device{}() };
         static std::uniform_int_distribution<long long> dist(1'000'000'000LL,
             9'999'999'999LL);
@@ -88,12 +88,12 @@ private:
     //optimal way of keeping registered pesels, finding in O(logn) time
     std::set<std::string> registeredPesels;
 
-    bool isPeselRegistered(const std::string& pesel) const {
+    inline bool isPeselRegistered(const std::string& pesel) const {
         if (registeredPesels.find(pesel) != registeredPesels.end()) return true;
         return false;
     }
 
-    long long generateUniqueAccountNumber() {
+    inline long long generateUniqueAccountNumber() {
         long long number;
         do {
             number = generateAccountNumber();
