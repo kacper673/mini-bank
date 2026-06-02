@@ -9,10 +9,14 @@
 class Bank {
 public:
     long long createAccount(const std::string& name,
-                            const std::string& pesel,
-                            const std::string& dateOfBirth) {
+        const std::string& pesel,
+        const std::string& dateOfBirth) {
         if (!isPeselValid(pesel))
             throw std::invalid_argument("Nieprawidlowy PESEL.");
+        if (isPeselRegistered(pesel))
+            throw std::invalid_argument("Konto o tym numerze PESEL juz istnieje");
+        if (isNameRegistered(name))
+            throw std::invalid_argument("Ta osoba ma juz konto");
         if (!isDateOfBirthValid(dateOfBirth))
             throw std::invalid_argument("Nieprawidlowa data urodzenia.");
 
@@ -44,7 +48,7 @@ public:
         getAccount(number).printInfo();
     }
 
-    void printAllAccounts(){
+    void printAllAccounts() {
         if (accounts.empty()) {
             std::cout << "Brak kont w systemie.\n";
             return;
@@ -57,7 +61,7 @@ public:
     static long long generateAccountNumber() {
         static std::mt19937_64 engine{ std::random_device{}() };
         static std::uniform_int_distribution<long long> dist(1'000'000'000LL,
-                                                             9'999'999'999LL);
+            9'999'999'999LL);
         return dist(engine);
     }
 
@@ -71,4 +75,19 @@ private:
         } while (accounts.count(number) > 0);
         return number;
     }
+
+    bool isPeselRegistered(const std::string& pesel) const {
+        for (const auto& [number, account] : accounts) {
+            if (account.owner.pesel == pesel) return true;
+        }
+        return false;
+    }
+
+    bool isNameRegistered(const std::string& name) const {
+        for (const auto& [number, account] : accounts) {
+            if (account.owner.name == name) return true;
+        }
+        return false;
+    }
+
 };
