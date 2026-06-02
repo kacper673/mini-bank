@@ -51,6 +51,9 @@ public:
 
 	void printSaldo();
 	void printInfo();
+
+	long long getNumber()  const { return number; }
+	long long getMoneyGr() const { return money_gr; }
 };
 
 

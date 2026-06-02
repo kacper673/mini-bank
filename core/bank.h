@@ -16,17 +16,16 @@ public:
             throw std::invalid_argument("Nieprawidlowy PESEL.");
         if (isPeselRegistered(pesel))
             throw std::invalid_argument("Konto o tym numerze PESEL juz istnieje");
-        if (isNameRegistered(name))
-            throw std::invalid_argument("Ta osoba ma juz konto");
         if (!isDateOfBirthValid(dateOfBirth))
             throw std::invalid_argument("Nieprawidlowa data urodzenia.");
 
         long long number = generateUniqueAccountNumber();
         accounts.emplace(number, Account(name, pesel, dateOfBirth, number));
+        registeredPesels.insert(pesel);
         return number;
     }
 
-    Account& getAccount(long long number) {
+     Account& getAccount(long long number) {
         if (!isValidAccountNumber(number))
             throw std::invalid_argument("Nieprawidlowy numer konta");
 
@@ -37,6 +36,23 @@ public:
         return it->second;
     }
 
+     // const overload for QT UI
+     const Account& getAccount(long long number) const {
+         auto it = accounts.find(number);
+         if (it == accounts.end())
+             throw std::runtime_error("Konto o podanym numerze nie istnieje.");
+         return it->second;
+     }
+
+    // getter for UI
+        std::vector<long long> getAccountNumbers() const {
+        std::vector<long long> nums;
+        for (const auto& [num, acc] : accounts)
+            nums.push_back(num);
+        return nums;
+    }
+
+    
     void deposit(long long number, long long amountGr) {
         getAccount(number).deposit(amountGr);
     }
@@ -69,10 +85,13 @@ public:
 private:
     std::map<long long, Account> accounts;
 
-    //optimal way of keeping registered pesels and names, finding in O(logn) time
+    //optimal way of keeping registered pesels, finding in O(logn) time
     std::set<std::string> registeredPesels;
-    std::set<std::string> registeredNames;
 
+    bool isPeselRegistered(const std::string& pesel) const {
+        if (registeredPesels.find(pesel) != registeredPesels.end()) return true;
+        return false;
+    }
 
     long long generateUniqueAccountNumber() {
         long long number;
@@ -80,17 +99,6 @@ private:
             number = generateAccountNumber();
         } while (accounts.count(number) > 0);
         return number;
-    }
-
-    ////optimal way of keeping registered pesels and names, finding in O(logn) time
-    bool isPeselRegistered(const std::string& pesel) const {
-        if (registeredPesels.find(pesel) != registeredPesels.end()) return true;
-        return false;
-    }
-
-    bool isNameRegistered(const std::string& name) const {
-        if (registeredNames.find(name) != registeredNames.end()) return true;
-        return false;
     }
 
 };
