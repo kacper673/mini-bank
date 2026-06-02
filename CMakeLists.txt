@@ -4,6 +4,19 @@ project(bank LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# ----------------------------------------------------------------
+# Wersja konsolowa
+# ----------------------------------------------------------------
+add_executable(bank_console
+    main_console.cpp
+    core/account.h
+    core/bank.h
+    core/validation.h
+)
+target_include_directories(bank_console PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+)
+
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 QUIET COMPONENTS Widgets)
