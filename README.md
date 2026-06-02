@@ -67,16 +67,26 @@ https://github.com/kacper673/mini-bank/commits/main
 ## Przykładowe zrzuty ekranu z działania programu
 
 **Główne okno — lista kont i szczegóły:**
+
+
 ![Główne okno](screenshots/accounts_list.png)
 
 **Dialog wpłaty:**
+
+
 ![Wpłata](screenshots/deposit.png)
 
 **Blokada wypłaty ponad dostępne saldo:**
+
+
 ![Błąd wypłaty](screenshots/cannot_withdraw_more_than_balance.png)
 
 **Próba utworzenia konta z nieprawidłowym PESELem:**
+
+
 ![Nieprawidłowy PESEL](screenshots/wrong_pesel_attempt.png)
 
 **Komunikat błędu walidacji PESELu:**
-![Komunikat błędu](screenshots/wrong_pesel_attempt_message.png)
+
+
+![Komunikat błędu](screenshots/wrong_pesel_attemt_message.png)
